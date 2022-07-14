@@ -1,6 +1,7 @@
 @php
     $value_key = $options['value_key'] ?? 'value';
     $title_key = $options['title_key'] ?? 'title';
+    $check_all = $options['check_all'] ?? 'true';
     if(!isset($options['checked'])){
         $options['checked'] = $value;
     }
@@ -16,10 +17,14 @@
     </div>
     @endforeach
 @else
-    <div class="form-check form-check-inline mr-3">
+@if($check_all == 'true')
+<div class="form-check form-check-inline mr-3">
         <input class="form-check-input" id="checkbox-{{ $name }}_all" type="checkbox" @change="{{ $name }}_checkAll" v-model="{{ $name }}_input_checkAll">
         <label class="form-check-label" for="checkbox-{{ $name }}_all">Check All</label>
-    </div>
+</div>
+@else
+
+@endif
     <div class="form-check form-check-inline mr-3" v-for="(option, key) in {{ $name }}_options">
         <input class="form-check-input" :id="'checkbox-{{ $name }}' + key" type="checkbox" :value="option.{{ $value_key }}" name="{{ $name }}[]" :checked="{{ $name }}_isChecked(option)" @change="{{ $name }}_check(option)">
         <label class="form-check-label" :for="'checkbox-{{ $name }}' + key" v-text="option.{{ $title_key }}"></label>

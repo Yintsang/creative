@@ -1,6 +1,7 @@
 @php 
     $main_field = $field;
     $main_title = $title ?? ucwords(str_replace('_', ' ', ($main_field ?? '')));
+    $button_text = $button_text ?? "Add Row";
 
     $template_obj = [];
 @endphp
@@ -120,7 +121,7 @@
                     </div>
                 </div>
             </draggable>
-            <a href="javascript:void(0);" class="btn btn-primary" @click="add_row_{{ $main_field }}">Add Row</a>
+            <a href="javascript:void(0);" class="btn btn-primary" @click="add_row_{{ $main_field }}">{{$button_text}}</a>
         </div>
     </div>
 </div>

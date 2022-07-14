@@ -20,6 +20,12 @@ class BaseFrontendController extends Controller
         $data['other_languages'] = $data['all_languages']->reject(function($language) {
             return $language->code == \App::getLocale();
         });
+
+        $data['contact_us'] =  \App\ContactUs::withDescription()->online()->arrange()->get();
+        $data['footer_business'] = \App\Business::withDescription()->online()->arrange()->get();
+        $data['evnet_page'] = \App\EventPage::withDescription()->online()->firstOrFail();
+        $data['setting'] = \App\SystemSetting::withDescription()->firstOrFail();
+        // dd($data['setting']);
       
         return $callback($data);
     }

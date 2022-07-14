@@ -314,7 +314,7 @@ class BaseAdminController extends Controller
         }
 
         $query = $this->postsQuery(\Route::getCurrentRoute()->parameters(), $query);
-
+    
         if($auto_get){
 
             if(!$paginate){

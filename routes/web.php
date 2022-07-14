@@ -18,4 +18,13 @@ Route::get('refresh-csrf', function() {
 
 \App\Language::indexRoute();
 
-// Route::get('/', 'IndexController@index')->name('index');
+Route::get('/', 'IndexController@index')->name('index');
+Route::get('/about_us', 'AboutUsController@index')->name('about_us');
+Route::get('/client', 'ClientController@index')->name('client');
+Route::get('/partners', 'PartnersController@index')->name('partners');
+Route::get('/contact_us', 'ContactUsController@index')->name('contact_us');
+Route::get('/event/{cate?}', 'EventController@index')->name('event');
+Route::get('/business/{slug}', 'BusinessController@index')->name('business');
+Route::get('/product_filter', 'BusinessController@submit')->name('business.filter');
+Route::get('/wheretobuy', 'WhereToBuyController@index')->name('wheretobuy');
+Route::get('/wheretobuy_filter', 'WhereToBuyController@submit')->name('wheretobuy_filter');

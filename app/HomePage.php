@@ -9,6 +9,8 @@ class HomePage extends BasePageModel
 {
     protected $table = 'home_page';
 
+    protected $casts = ['content' => 'array'];
+
     public function getListingUrl($params = []){
         return false;
     }

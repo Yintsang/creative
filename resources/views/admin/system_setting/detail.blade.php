@@ -108,6 +108,26 @@
                 ]
             ])
 
+
+            @row([
+                'type' => 'radio',
+                'field' => 'lang_chinese',
+                'title' => 'Chinese Language',
+                'options' => [
+                    'list' => [
+                        [
+                            'title' => 'Yes',
+                            'value' => 1,
+                        ],
+                        [
+                            'title' => 'No',
+                            'value' => 0,
+                        ]
+                    ]
+                ]
+
+            ])
+
         </div>
         @include('admin.base.footer') 
     </div>

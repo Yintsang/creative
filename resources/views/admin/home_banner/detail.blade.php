@@ -38,29 +38,53 @@
             ])
 
             @row([
-                'type' => 'textinput',
-                'field' => 'url',
+                'title' =>'Background Image (2160 x 1425px)',
+                'type' => 'image-upload',
+                'field' => 'background_image',
+                'options' => [
+                    'required' => true,
+                ],
             ])
 
             @row([
-                'type' => 'editor',
-                'field' => 'description',
+                'title' =>'Circle Image (1300 x 1300px)',
+                'type' => 'image-upload',
+                'field' => 'image',
+                'options' => [
+                    'required' => true,
+                ],
+            ])
+
+            @row([
+                'title' =>'Product Image (1300 x 1300px)',
+                'type' => 'image-upload',
+                'field' => 'p_image',
+                'options' => [
+                    'required' => true,
+                ],
+            ])
+
+            @row([
+                'type' =>'Description title',
+                'type' => 'textinput',
+                'field' => 'description_title',
                 'has_language' => true,
             ])
 
             @row([
-                'type' => 'image-upload',
-                'field' => 'image',
+                'type' => 'textarea',
+                'field' => 'description',
+                'has_language' => true,
+            ])
+            
+            @row([
+                'type' => 'textinput',
+                'field' => 'url',
+                'has_language' => true,
             ])
 
-            @row([
-                'type' => 'image-upload',
-                'field' => 'image_list',
-                'options' => [
-                    'is_single' => false
-                ]
-            ])
-             
+            <b>If Chinese version please start at "/zh-hant/"</b>
+
             @include('admin.base.status')
         </div>
         @include('admin.base.footer') 

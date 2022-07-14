@@ -711,9 +711,7 @@ class BaseModel extends Model
     public function addDefaultMeta(){
         $columns = $this->getTableColumns();
         foreach ($columns as $column) {
-            if(!isset($this->$column)){
-                $this->$column = null;
-            }
+            $this->$column = $this->$column ?? null;
         }
 
         if($this->hasDescriptionModel()){
