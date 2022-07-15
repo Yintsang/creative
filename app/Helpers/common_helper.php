@@ -340,3 +340,12 @@ function storage_path_v2($path = '', $driver = null){
 
     return config(sprintf("filesystems.disks.%s.root", $driver)) . '/' . $path;
 }
+
+function locationHasChild($location = '') {
+    if ($location) {
+        $region = \App\PosLocationCategory::where('id', $location)->first();
+        if ($region) {
+            return boolval($region->has_child_category);
+        }
+    }
+}

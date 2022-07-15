@@ -16,5 +16,7 @@ class PosLocationCategory extends BaseCategoryModel
     public function getDetailUrl($params = []){
         return false;
     }
-
+    public function region(){
+        return $this->hasMany(\App\PosLocationCategory::class, 'id');
+    }
 }

@@ -1,6 +1,11 @@
 @extends('layouts.frontend')
 
 @section('content')
+<?php
+// echo "<pre>";
+//   print_r($region);
+// echo "</pre>";
+?>
 <div class="all">
     <div data-w-id="8e97c06d-ef18-5bcf-1fe2-9a4bd723f9da" class="section-banner wf-section">
       <div class="inner-banner-content-b">
@@ -52,7 +57,7 @@
                     <div class="brand_type_text" pkey="">All</div><img loading="lazy" src="{{ asset_frontend('images/arrow-filter.svg') }}" alt="" class="img-dropdown-arrow">
                   </div>
                   <nav class="brand_type where-to-buy-filter-dropdown-list w-dropdown-list">
-                    <a href="#" class="where-to-buy-filter-dropdown-link w-dropdown-link" data-ix="bus-filter-item-click">All</a>
+                    <a href="#" pkey="all" class="where-to-buy-filter-dropdown-link w-dropdown-link" data-ix="bus-filter-item-click">All</a>
                     @foreach($brand as $item)
                     <a href="#" pkey="{{$item->id}}" class="where-to-buy-filter-dropdown-link w-dropdown-link" data-ix="bus-filter-item-click">{{$item->title}}</a>
                     @endforeach
@@ -68,11 +73,13 @@
                     <div class="region_type_text" pkey="">All</div><img loading="lazy" src="{{ asset_frontend('images/arrow-filter.svg') }}" alt="" class="img-dropdown-arrow">
                   </div>
                   <nav class="region_type where-to-buy-filter-dropdown-list region w-dropdown-list">
-                    <a href="#" class="where-to-buy-filter-dropdown-link w-dropdown-link" data-ix="bus-filter-item-click">All</a>
-                    <a href="#" class="where-to-buy-filter-dropdown-link w-dropdown-link" data-ix="bus-filter-item-click">Hong Kong</a>
-                    <a href="#" class="where-to-buy-filter-dropdown-link w-dropdown-link" data-ix="bus-filter-item-click">Macau</a>
-                    <a href="#" class="where-to-buy-filter-dropdown-link w-dropdown-link" data-ix="bus-filter-item-click">China</a>
-                    <a href="#" class="where-to-buy-filter-dropdown-link w-dropdown-link" data-ix="bus-filter-item-click">Far East</a>
+                    <a href="#" pkey="all" class="where-to-buy-filter-dropdown-link w-dropdown-link" data-ix="bus-filter-item-click">All</a>
+                    {{-- @foreach ($regions as $item)
+                    <a href="#" pkey="{{$item->id}}" class="where-to-buy-filter-dropdown-link w-dropdown-link" data-ix="bus-filter-item-click">{{$item->title}}</a>
+                    @endforeach --}}
+                    @foreach ($all_location as $item)
+                    <a href="#" pkey="{{$item->id}}" class="where-to-buy-filter-dropdown-link w-dropdown-link" data-ix="bus-filter-item-click">{{$item->title}}</a>
+                    @endforeach
                   </nav>
                 </div>
               </div>
@@ -85,11 +92,22 @@
                     <div>All</div><img loading="lazy" src="{{ asset_frontend('images/arrow-filter.svg') }}" alt="" class="img-dropdown-arrow">
                   </div>
                   <nav class="where-to-buy-filter-dropdown-list w-dropdown-list">
-                    <a href="#" class="where-to-buy-filter-dropdown-link w-dropdown-link" data-ix="bus-filter-item-click">All</a>
-                    <a href="#" class="where-to-buy-filter-dropdown-link w-dropdown-link" data-ix="bus-filter-item-click">Hong Kong Island</a>
-                    <a href="#" class="where-to-buy-filter-dropdown-link w-dropdown-link" data-ix="bus-filter-item-click">Kowloon</a>
-                    <a href="#" class="where-to-buy-filter-dropdown-link w-dropdown-link" data-ix="bus-filter-item-click">New Territories</a>
-                    <a href="#" class="where-to-buy-filter-dropdown-link w-dropdown-link" data-ix="bus-filter-item-click">Others</a>
+                    <a href="#" pkey="all" class="where-to-buy-filter-dropdown-link w-dropdown-link" data-ix="bus-filter-item-click">All</a>
+                    @foreach ($all_location as $item)
+                      @isset($item->child_cats)
+                        @foreach($item->child_cats as $item2)
+                        <a href="#" pkey="{{$item2->id}}" class="where-to-buy-filter-dropdown-link w-dropdown-link" data-ix="bus-filter-item-click">{{$item2->title}}</a>
+                        @endforeach
+                      @endisset
+                      @isset($item->childs)
+                        @foreach($item->childs as $item2)
+                        <a href="#" pkey="{{$item2->id}}" class="where-to-buy-filter-dropdown-link w-dropdown-link" data-ix="bus-filter-item-click">{{$item2->title}}</a>
+                        @endforeach
+                      @endisset
+                    @endforeach
+                      {{-- @foreach($item->child_cats as $item2)
+                      <a href="#" pkey="{{$item2->id}}" class="where-to-buy-filter-dropdown-link w-dropdown-link" data-ix="bus-filter-item-click">{{$item2->title}}</a>
+                      @endforeach --}}
                   </nav>
                 </div>
               </div>
@@ -102,11 +120,14 @@
                     <div>All</div><img loading="lazy" src="{{ asset_frontend('images/arrow-filter.svg') }}" alt="" class="img-dropdown-arrow">
                   </div>
                   <nav class="where-to-buy-filter-dropdown-list district w-dropdown-list">
-                    <a href="#" class="where-to-buy-filter-dropdown-link w-dropdown-link" data-ix="bus-filter-item-click">All</a>
-                    <a href="#" class="where-to-buy-filter-dropdown-link w-dropdown-link" data-ix="bus-filter-item-click">Causeway Bay</a>
-                    <a href="#" class="where-to-buy-filter-dropdown-link w-dropdown-link" data-ix="bus-filter-item-click">Central</a>
-                    <a href="#" class="where-to-buy-filter-dropdown-link w-dropdown-link" data-ix="bus-filter-item-click">North Point</a>
-                    <a href="#" class="where-to-buy-filter-dropdown-link w-dropdown-link" data-ix="bus-filter-item-click">Sai Wan Ho</a>
+                    <a href="#" pkey="all" class="where-to-buy-filter-dropdown-link w-dropdown-link" data-ix="bus-filter-item-click">All</a>
+                    @foreach ($all_location as $item)
+                      @foreach($item->child_cats as $item2)
+                        @foreach($item2->childs as $item3)
+                          <a href="#" pkey="{{$item3->id}}" class="where-to-buy-filter-dropdown-link w-dropdown-link" data-ix="bus-filter-item-click">{{$item3->title}}</a>
+                        @endforeach
+                      @endforeach
+                    @endforeach
                   </nav>
                 </div>
               </div>
@@ -190,264 +211,71 @@
                 </div>
               </div>
               <div class="where-to-buy-retails-row">
+                <!-- For Each-->
+                <div class="where-to-buy-title" style="font-size:35px;padding-bottom:20px">Hong Kong</div>
+                @foreach($location_categories as $location_category)
                 <div class="where-to-buy-retails-b">
                   <div class="sub-heading-b">
-                    <div class="where-to-buy-title">Hong Kong Island</div>
+                    <div class="where-to-buy-title">{{ $location_category->title }}</div>
                   </div>
                   <div class="where-to-buy-table">
                     <div class="where-to-buy-row first">
                       <div class="where-to-buy-col-15 title-text">
-                        <div><strong>District</strong><br></div>
+                        <div><strong>{{lang('District')}}</strong><br></div>
                       </div>
                       <div class="where-to-buy-col-15 title-text"></div>
                       <div class="where-to-buy-col-27 title-text">
-                        <div><strong>Company Name</strong><br></div>
+                        <div><strong>{{lang('Company Name')}}</strong><br></div>
                       </div>
                       <div class="where-to-buy-col-27 title-text">
-                        <div><strong>Address</strong><br></div>
+                        <div><strong>{{lang('Address')}}</strong><br></div>
                       </div>
                       <div class="where-to-buy-col-15 title-text">
-                        <div><strong>Telephone</strong><br></div>
+                        <div><strong>{{lang('Telephone')}}</strong><br></div>
                       </div>
                     </div>
-                    <div class="where-to-buy-row">
-                      <div class="where-to-buy-col-15 mobile-none">
-                        <div>Causeway Bay</div>
-                      </div>
-                      <div class="where-to-buy-col-15"><img src="images/retail-shop-012x.jpg" loading="lazy" width="220" alt="" class="where-to-buy-logo-img"></div>
-                      <div class="where-to-buy-col-27">
-                        <div><strong>Bluefrog</strong><br></div>
-                        <div class="where-to-buy-mobile-text-b">
-                          <div>Causeway Bay</div>
+                    @foreach($location_category->childs as $district)
+                      @foreach($district->retail_shops as $shop)
+                      <div class="where-to-buy-row">
+                        <div class="where-to-buy-col-15 mobile-none">
+                          <div>{{ $district->title }}</div>
                         </div>
-                        <div class="where-to-buy-mobile-text-b">
-                          <div>
-                            <a href="https://g.page/ntmedicaltw?share" target="_blank" class="where-to-buy-link">Tsuen Wan, Lo Tak Ct, 46-58 C2 Carson Mansion</a>
+                        <div class="where-to-buy-col-15"><img src="images/retail-shop-012x.jpg" loading="lazy" width="220" alt="" class="where-to-buy-logo-img"></div>
+                        <div class="where-to-buy-col-27">
+                          <div><strong>{{ $shop->title }}</strong><br></div>
+                          <div class="where-to-buy-mobile-text-b">
+                            <div>{{ $district->title }}</div>
+                          </div>
+                          <div class="where-to-buy-mobile-text-b">
+                            <div>
+                              <a href="{{ $shop->google_map_link }}" target="_blank" class="where-to-buy-link">{{ $shop->address }}</a>
+                            </div>
+                          </div>
+                          <div class="where-to-buy-mobile-text-b">
+                            <div>
+                              <a href="tel:+852{{ $shop->tel }}" class="where-to-buy-link">{{ $shop->tel }}</a>
+                            </div>
                           </div>
                         </div>
-                        <div class="where-to-buy-mobile-text-b">
+                        <div class="where-to-buy-col-27 mobile-none">
                           <div>
-                            <a href="tel:+85291371158" class="where-to-buy-link">+852 9137 1158</a>
+                            <a href="{{ $shop->google_map_link }}" target="_blank" class="where-to-buy-link">{{ $shop->address }}</a>
                           </div>
                         </div>
-                      </div>
-                      <div class="where-to-buy-col-27 mobile-none">
-                        <div>
-                          <a href="https://g.page/ntmedicaltw?share" target="_blank" class="where-to-buy-link">Tsuen Wan, Lo Tak Ct, 46-58 C2 Carson Mansion</a>
-                        </div>
-                      </div>
-                      <div class="where-to-buy-col-15 mobile-none">
-                        <div>
-                          <a href="tel:+85291371158" class="where-to-buy-link">+852 9137 1158</a>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="where-to-buy-row">
-                      <div class="where-to-buy-col-15 mobile-none">
-                        <div>North Point</div>
-                      </div>
-                      <div class="where-to-buy-col-15"><img src="images/online-shop-012x.jpg" loading="lazy" width="220" alt="" class="where-to-buy-logo-img"></div>
-                      <div class="where-to-buy-col-27">
-                        <div><strong>MSB International Ltd Hong Kong</strong><br></div>
-                        <div class="where-to-buy-mobile-text-b">
-                          <div>North Point</div>
-                        </div>
-                        <div class="where-to-buy-mobile-text-b">
+                        <div class="where-to-buy-col-15 mobile-none">
                           <div>
-                            <a href="https://g.page/ntmedicaltw?share" target="_blank" class="where-to-buy-link">Tsuen Wan, Lo Tak Ct, 46-58 C2 Carson Mansion</a>
-                          </div>
-                        </div>
-                        <div class="where-to-buy-mobile-text-b">
-                          <div>
-                            <a href="tel:+85291371158" class="where-to-buy-link">+852 9137 1158</a>
+                            <a href="tel:+852{{ $shop->tel }}" class="where-to-buy-link">{{ $shop->tel }}</a>
                           </div>
                         </div>
                       </div>
-                      <div class="where-to-buy-col-27 mobile-none">
-                        <div>
-                          <a href="https://g.page/ntmedicaltw?share" target="_blank" class="where-to-buy-link">Tsuen Wan, Lo Tak Ct, 46-58 C2 Mansion</a>
-                        </div>
-                      </div>
-                      <div class="where-to-buy-col-15 mobile-none">
-                        <div>
-                          <a href="tel:+85291371158" class="where-to-buy-link">+852 9137 1158</a>
-                        </div>
-                      </div>
-                    </div>
+                      @endforeach
+                    @endforeach
+                    
                   </div>
                 </div>
-                <div class="where-to-buy-retails-b">
-                  <div class="sub-heading-b">
-                    <div class="where-to-buy-title">Kowloon</div>
-                  </div>
-                  <div class="where-to-buy-table">
-                    <div class="where-to-buy-row first">
-                      <div class="where-to-buy-col-15 title-text">
-                        <div><strong>District</strong><br></div>
-                      </div>
-                      <div class="where-to-buy-col-15 title-text"></div>
-                      <div class="where-to-buy-col-27 title-text">
-                        <div><strong>Company Name</strong><br></div>
-                      </div>
-                      <div class="where-to-buy-col-27 title-text">
-                        <div><strong>Address</strong><br></div>
-                      </div>
-                      <div class="where-to-buy-col-15 title-text">
-                        <div><strong>Telephone</strong><br></div>
-                      </div>
-                    </div>
-                    <div class="where-to-buy-row">
-                      <div class="where-to-buy-col-15 mobile-none">
-                        <div>Cheung Sha Wan</div>
-                      </div>
-                      <div class="where-to-buy-col-15"><img src="images/retail-shop-012x.jpg" loading="lazy" width="220" alt="" class="where-to-buy-logo-img"></div>
-                      <div class="where-to-buy-col-27">
-                        <div><strong>Bluefrog</strong><br></div>
-                        <div class="where-to-buy-mobile-text-b">
-                          <div>Cheung Sha Wan</div>
-                        </div>
-                        <div class="where-to-buy-mobile-text-b">
-                          <div>
-                            <a href="https://g.page/ntmedicaltw?share" target="_blank" class="where-to-buy-link">Tsuen Wan, Lo Tak Ct, 46-58 C2 Carson Mansion</a>
-                          </div>
-                        </div>
-                        <div class="where-to-buy-mobile-text-b">
-                          <div>
-                            <a href="tel:+85291371158" class="where-to-buy-link">+852 9137 1158</a>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="where-to-buy-col-27 mobile-none">
-                        <div>
-                          <a href="https://g.page/ntmedicaltw?share" target="_blank" class="where-to-buy-link">Tsuen Wan, Lo Tak Ct, 46-58 C2 Carson Mansion</a>
-                        </div>
-                      </div>
-                      <div class="where-to-buy-col-15 mobile-none">
-                        <div>
-                          <a href="tel:+85291371158" class="where-to-buy-link">+852 9137 1158</a>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="where-to-buy-row">
-                      <div class="where-to-buy-col-15 mobile-none">
-                        <div>Kowloon City</div>
-                      </div>
-                      <div class="where-to-buy-col-15"><img src="images/online-shop-022x.png" loading="lazy" width="220" srcset="images/online-shop-022x-p-500.png 500w, images/online-shop-022x.png 600w" sizes="(max-width: 479px) 100vw, (max-width: 767px) 16vw, (max-width: 991px) 17vw, (max-width: 1279px) 2vw, 1vw" alt="" class="where-to-buy-logo-img"></div>
-                      <div class="where-to-buy-col-27">
-                        <div><strong>CARY &amp; DAY &amp; MARTIN</strong><br></div>
-                        <div class="where-to-buy-mobile-text-b">
-                          <div>Kowloon City</div>
-                        </div>
-                        <div class="where-to-buy-mobile-text-b">
-                          <div>
-                            <a href="https://g.page/ntmedicaltw?share" target="_blank" class="where-to-buy-link">Tsuen Wan, Lo Tak Ct, 46-58 C2 Carson Mansion</a>
-                          </div>
-                        </div>
-                        <div class="where-to-buy-mobile-text-b">
-                          <div>
-                            <a href="tel:+85291371158" class="where-to-buy-link">+852 9137 1158</a>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="where-to-buy-col-27 mobile-none">
-                        <div>
-                          <a href="https://g.page/ntmedicaltw?share" target="_blank" class="where-to-buy-link">Tsuen Wan, Lo Tak Ct, 46-58 C2 Carson Mansion</a>
-                        </div>
-                      </div>
-                      <div class="where-to-buy-col-15 mobile-none">
-                        <div>
-                          <a href="tel:+85291371158" class="where-to-buy-link">+852 9137 1158</a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="where-to-buy-retails-b">
-                  <div class="sub-heading-b">
-                    <div class="where-to-buy-title">New Territories</div>
-                  </div>
-                  <div class="where-to-buy-table">
-                    <div class="where-to-buy-row first">
-                      <div class="where-to-buy-col-15 title-text">
-                        <div><strong>District</strong><br></div>
-                      </div>
-                      <div class="where-to-buy-col-15 title-text"></div>
-                      <div class="where-to-buy-col-27 title-text">
-                        <div><strong>Company Name</strong><br></div>
-                      </div>
-                      <div class="where-to-buy-col-27 title-text">
-                        <div><strong>Address</strong><br></div>
-                      </div>
-                      <div class="where-to-buy-col-15 title-text">
-                        <div><strong>Telephone</strong><br></div>
-                      </div>
-                    </div>
-                    <div class="where-to-buy-row">
-                      <div class="where-to-buy-col-15 mobile-none">
-                        <div>Sha Tin</div>
-                      </div>
-                      <div class="where-to-buy-col-15"><img src="images/retail-shop-012x.jpg" loading="lazy" width="220" alt="" class="where-to-buy-logo-img"></div>
-                      <div class="where-to-buy-col-27">
-                        <div><strong>Bluefrog</strong><br></div>
-                        <div class="where-to-buy-mobile-text-b">
-                          <div>Sha Tin</div>
-                        </div>
-                        <div class="where-to-buy-mobile-text-b">
-                          <div>
-                            <a href="https://g.page/ntmedicaltw?share" target="_blank" class="where-to-buy-link">Tsuen Wan, Lo Tak Ct, 46-58 C2 Carson Mansion</a>
-                          </div>
-                        </div>
-                        <div class="where-to-buy-mobile-text-b">
-                          <div>
-                            <a href="tel:+85291371158" class="where-to-buy-link">+852 9137 1158</a>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="where-to-buy-col-27 mobile-none">
-                        <div>
-                          <a href="https://g.page/ntmedicaltw?share" target="_blank" class="where-to-buy-link">Tsuen Wan, Lo Tak Ct, 46-58 C2 Carson Mansion</a>
-                        </div>
-                      </div>
-                      <div class="where-to-buy-col-15 mobile-none">
-                        <div>
-                          <a href="tel:+85291371158" class="where-to-buy-link">+852 9137 1158</a>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="where-to-buy-row">
-                      <div class="where-to-buy-col-15 mobile-none">
-                        <div>Yuen Long</div>
-                      </div>
-                      <div class="where-to-buy-col-15"><img src="images/online-shop-012x.jpg" loading="lazy" width="220" alt="" class="where-to-buy-logo-img"></div>
-                      <div class="where-to-buy-col-27">
-                        <div><strong>Hallway Feeds</strong><br></div>
-                        <div class="where-to-buy-mobile-text-b">
-                          <div>Yuen Long</div>
-                        </div>
-                        <div class="where-to-buy-mobile-text-b">
-                          <div>
-                            <a href="https://g.page/ntmedicaltw?share" target="_blank" class="where-to-buy-link">Tsuen Wan, Lo Tak Ct, 46-58 C2 Carson Mansion</a>
-                          </div>
-                        </div>
-                        <div class="where-to-buy-mobile-text-b">
-                          <div>
-                            <a href="tel:+85291371158" class="where-to-buy-link">+852 9137 1158</a>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="where-to-buy-col-27 mobile-none">
-                        <div>
-                          <a href="https://g.page/ntmedicaltw?share" target="_blank" class="where-to-buy-link">Tsuen Wan, Lo Tak Ct, 46-58 C2 Carson Mansion</a>
-                        </div>
-                      </div>
-                      <div class="where-to-buy-col-15 mobile-none">
-                        <div>
-                          <a href="tel:+85291371158" class="where-to-buy-link">+852 9137 1158</a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                @endforeach
+                
+                
               </div>
             </div>
           </div>

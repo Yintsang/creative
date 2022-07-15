@@ -22,4 +22,7 @@ class RetailShop extends BaseModel
     public function district(){
         return $this->belongsTo(\App\PosLocation::class, 'district_id', 'id');
     }
+    public function retail_shops(){
+        return $this->hasMany(\App\RetailShop::class, 'district_id');
+    }
 }

@@ -28,13 +28,9 @@ window.addEventListener('DOMContentLoaded', (event) => {
                   </div>\
                 </div>';
                 for(var i =0;i<res.length;i++) {
-                    var image = "";
-                    if(res[i]['images'].length > 0){
-                        image = res[i]['images'][0]['path'];
-                    }
                     dom += '\
                     <div class="where-to-buy-row">\
-                        <div class="where-to-buy-col-15"><img src="'+image+'" loading="lazy" width="220" alt="" class="where-to-buy-logo-img"></div>\
+                        <div class="where-to-buy-col-15"><img src="'+res[i]['images'][0]['path']+'" loading="lazy" width="220" alt="" class="where-to-buy-logo-img"></div>\
                         <div class="where-to-buy-col-27">\
                             <div><strong>'+res[i]['title']+'</strong><br></div>\
                             <div class="where-to-buy-mobile-text-b">\
@@ -79,15 +75,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
     function retail_shop_temp(res){
         console.log(res);
         dom = '\
-        <div class="where-to-buy-content-b">\
-              <div class="section-heading-b">\
-                <div class="section-heading-wrap">\
-                  <div class="heading-gradient-b"></div>\
-                  <h2>Retail shop</h2>\
-                </div>\
-              </div>\
-              <div class="where-to-buy-retails-row">\
-                <div class="where-to-buy-retails-b">\
+        <div class="where-to-buy-retails-b">\
                   <div class="sub-heading-b">\
                     <div class="where-to-buy-title">Hong Kong Island</div>\
                   </div>\
@@ -109,7 +97,7 @@ window.addEventListener('DOMContentLoaded', (event) => {
                     </div>';
                     for(var i =0;i<res.length;i++) {
                         var image = "";
-                        if(res[i]['images'].length > 0){
+                        if(res[i]['images'][0]['path']){
                             image = res[i]['images'][0]['path'];
                         }
                     dom += '\
@@ -150,8 +138,6 @@ window.addEventListener('DOMContentLoaded', (event) => {
                         dom += '\
                     </div>\
                 </div>\
-              </div>\
-            </div>\
         ';
         $('.where-to-buy-content-row').append(dom);
     }
@@ -224,7 +210,12 @@ window.addEventListener('DOMContentLoaded', (event) => {
                     region_type: $('.region_type_hidden').val(),
                 },
                 success: function(res) {
-                    console.log("region success");
+                    // $('.bus-product-item').remove();
+                    console.log("123");
+                    // console.log(res);
+                    if(res['online_shop'] !== null){
+                        online_shop_temp(res['online_shop']);
+                    }
                 }
             })
         }

@@ -16,5 +16,7 @@ class PosLocation extends BaseChildModel
     public function getDetailUrl($params = []){
         return false;
     }
-
+    public function retail_shops(){
+        return $this->hasMany(\App\RetailShop::class, 'district_id');
+    }
 }
