@@ -29,6 +29,7 @@ class RetailShopController extends BaseAdminController
         $data['id'] = $id;
         $data['record']->initRepeater(true);
         $data['supplier'] = \App\Supplier::withDescription()->arrange()->get();
+        $data['districts'] = \App\PosLocation::withDescription()->arrange()->get();
         return view($this->section('detail'), $data);
     }
 

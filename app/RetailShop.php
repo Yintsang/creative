@@ -19,4 +19,7 @@ class RetailShop extends BaseModel
     public function supplier(){
         return $this->belongsToMany(\App\Collection::class, 'retail_shop_supplier_relation', 'retail_shop_supplier_id', 'retail_shop_id');
     }
+    public function district(){
+        return $this->belongsTo(\App\PosLocation::class, 'district_id', 'id');
+    }
 }

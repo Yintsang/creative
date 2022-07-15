@@ -19,6 +19,8 @@ class WhereToBuyController extends BaseFrontendController
             // $data['wheretobuy'] = \App\WhereToBuy::withDescription()->first();
             $data['online_shop'] = \App\OnlineShop::withDescription()->online()->arrange()->get();
             $data['brand'] = \App\Supplier::withDescription()->online()->arrange()->get();
+            $hong_kong = \App\PosLocationCategory::withDescription()->online()->arrange();
+            $data['retail_shop'] = \App\RetailShop::withDescription()->online()->arrange();
             // $data['seo'] = $this->getSeo($data['wheretobuy']);
             // dd($data['about_us_history']->content);
             return view('frontend.wheretobuy', $data);
@@ -59,7 +61,16 @@ class WhereToBuyController extends BaseFrontendController
             // dd($shop);
         }
         else if($shop_type == "retail"){
-
+            // $retail_shop = \App\RetailShop::withDescription()->online()->firstOrFail();
+            // $data['retail_shop'] = $retail_shop->with(['supplier' => function($query){
+            //     $query->withDescription()->online()->arrange();
+            // }])->where(function($query){
+            //     if($supplier_id = request('brand_type')){
+            //         $query->whereHas('supplier', function($query) use($supplier_id){
+            //             $query->whereId($supplier_id)->online();
+            //         });
+            //     }
+            // })->withDescription()->online()->arrange()->get();
         }
         else{
 

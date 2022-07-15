@@ -26,7 +26,7 @@
       <input type="hidden" class="region_type_hidden" name="region_type" value="">
       <input type="hidden" class="location_type_hidden" name="location_type" value="">
       <input type="hidden" class="district_type_hidden" name="district_type" value="">
-      <div id="collections" class="section-div">
+      <div id="collections" class="section-div" style="min-height:500px">
         <div class="where-to-buy-filter-b" data-ix="common-fade-from-bottom">
           <div class="where-to-buy-filter-item-b">
             <div class="where-to-buy-filter-item">

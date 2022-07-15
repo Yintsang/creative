@@ -138,8 +138,5 @@ window.addEventListener('DOMContentLoaded', (event) => {
                 }
             })
         }
-        else{
-            console.log("123444");
-        }
     });
 });

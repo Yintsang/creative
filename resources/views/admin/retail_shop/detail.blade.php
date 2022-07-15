@@ -31,8 +31,21 @@
         <div class="card-body" id="app-main">
 
         @row([
+            'type' => 'searchselect',
+            'field' => 'district_id',
+            'title'=> 'District',
+            'options' => [
+                'required' => true,
+                'value_key' => 'id',
+                'title_key' => 'title',
+                'list' =>  $districts->toArray()
+            ]
+        ])
+
+        @row([
                 'type' => 'checkbox',
                 'field' => 'supplier',
+                'title' => 'Brand',
                 'options' => [
                     'check_all' => 'false',
                     'value_key' => 'id',
