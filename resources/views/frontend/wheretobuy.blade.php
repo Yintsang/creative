@@ -3,7 +3,7 @@
 @section('content')
 <?php
 // echo "<pre>";
-//   print_r($region);
+//   print_r($shop);
 // echo "</pre>";
 ?>
 <div class="all">
@@ -89,9 +89,9 @@
                 <div class="where-to-buy-filter-type">{{lang('Location')}}</div>
                 <div data-hover="false" data-delay="500" class="where-to-buy-filter-dropdown w-dropdown">
                   <div class="where-to-buy-filter-dropdown-toggle w-dropdown-toggle" data-ix="where-to-buy-filter-interaction">
-                    <div>All</div><img loading="lazy" src="{{ asset_frontend('images/arrow-filter.svg') }}" alt="" class="img-dropdown-arrow">
+                    <div class="location_type_text">All</div><img loading="lazy" src="{{ asset_frontend('images/arrow-filter.svg') }}" alt="" class="img-dropdown-arrow">
                   </div>
-                  <nav class="where-to-buy-filter-dropdown-list w-dropdown-list">
+                  <nav class="location_type where-to-buy-filter-dropdown-list w-dropdown-list">
                     <a href="#" pkey="all" class="where-to-buy-filter-dropdown-link w-dropdown-link" data-ix="bus-filter-item-click">All</a>
                     @foreach ($all_location as $item)
                       @isset($item->child_cats)
@@ -117,9 +117,9 @@
                 <div class="where-to-buy-filter-type">{{lang('District')}}</div>
                 <div data-hover="false" data-delay="500" class="where-to-buy-filter-dropdown w-dropdown">
                   <div class="where-to-buy-filter-dropdown-toggle w-dropdown-toggle" data-ix="where-to-buy-filter-interaction">
-                    <div>All</div><img loading="lazy" src="{{ asset_frontend('images/arrow-filter.svg') }}" alt="" class="img-dropdown-arrow">
+                    <div class="district_type_text">All</div><img loading="lazy" src="{{ asset_frontend('images/arrow-filter.svg') }}" alt="" class="img-dropdown-arrow">
                   </div>
-                  <nav class="where-to-buy-filter-dropdown-list district w-dropdown-list">
+                  <nav class="district_type where-to-buy-filter-dropdown-list district w-dropdown-list">
                     <a href="#" pkey="all" class="where-to-buy-filter-dropdown-link w-dropdown-link" data-ix="bus-filter-item-click">All</a>
                     @foreach ($all_location as $item)
                       @foreach($item->child_cats as $item2)

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class WhereToBuyController extends BaseFrontendController
 {
@@ -28,7 +29,7 @@ class WhereToBuyController extends BaseFrontendController
                 $query->withDescription()->online()->arrange();
             }])->online()->arrange()->get();
             // dd($data['all_location']);
-            $location_category_id = 1;
+            $location_category_id = 1; //Hong Kong
             $location_category = \App\PosLocationCategory::findOrFail($location_category_id);
             $data['location_categories'] = $location_category->child_cats()->withDescription()->with(['childs' => function($query){
                 $query->withDescription()->online()->arrange()->with(['retail_shops' => function($query){
@@ -54,10 +55,10 @@ class WhereToBuyController extends BaseFrontendController
         // $products = $business->product()->with(['collection' => function($query){
         //     $query->withDescription()->online()->arrange();
         // }])->withDescription()->online()->arrange()->get();
-        return $this->getShop(request('shop_type'),request('brand_type'),request('region_type'));
+        return $this->getShop(request('shop_type'),request('brand_type'),request('region_type'),request('location_type'),request('district_type'));
     }
 
-    function getShop($shop_type, $brand_type, $region_type){
+    function getShop($shop_type, $brand_type, $region_type, $location_type, $district_type){
         if($shop_type == "online"){
             // $data['online_shop'] = \App\OnlineShop::withDescription()->online()->arrange()->get();
             // foreach($data['online_shop'] as $shop){
@@ -83,6 +84,19 @@ class WhereToBuyController extends BaseFrontendController
             // dd($shop);
         }
         else if($shop_type == "retail"){
+
+            // $location_category_id = $region_type;
+            // $location_category = \App\PosLocationCategory::findOrFail($location_category_id);
+            // $data['location_categories'] = $location_category->child_cats()->withDescription()->with(['childs' => function($query){
+            //     $query->withDescription()->online()->arrange()->with(['retail_shops' => function($query){
+            //         $query->withDescription()->online()->arrange();
+            //     }])->whereHas('retail_shops', function($query){
+            //         $query->online();
+            //     });
+            // }])->whereHas('childs.retail_shops', function($query){
+            //     $query->online();
+            // })->online()->arrange()->get();
+
             $retail_shop = \App\RetailShop::withDescription()->online()->firstOrFail();
             $data['retail_shop'] = $retail_shop->with(['supplier' => function($query){
                 $query->withDescription()->online()->arrange();
@@ -94,18 +108,96 @@ class WhereToBuyController extends BaseFrontendController
                         });
                     }
                 }
-                // if(request('region_type') != 'all'){
-                //     if($region_id = request('region_type')){
-                //         $query->where(function (Builder $query) {
-                //             return $query->where('active', 1)
-                //         })
-                //     }
-                // }
-            })->withDescription()->online()->arrange()->get();
+            });
+            if(isset($district_type)){
+                if($district_type != 'all'){
+                    $data['retail_shop']->where(function($query){
+                        if($district_id = request('district_type')){
+                            $query->whereHas('district', function($query) use($district_id){
+                                $query->whereId($district_id)->online();
+                            });
+                        }
+                    });
+                }
+            }
+            $data['retail_shop'] = $data['retail_shop']->withDescription()->online()->arrange()->get();
+            foreach($data['retail_shop'] as $item){
+                $pos_location_id = DB::table('pos_location')->where('id', $item->district_id)->first();
+                if($pos_location_id->parent_id == 9 ){ //Hard Code for Macau
+                    $item->location_id = $pos_location_id->id;
+                }
+                else{
+                    $item->location_id = $pos_location_id->parent_id;
+                }
+                // $pos_location_slug = DB::table('pos_location_description')->where('description_id', $pos_location_id->id)->where('language_id', '1')->first();
+                // $item->location_title = $pos_location_slug->title;
+                $pos_district_slug = DB::table('pos_location_description')->where('description_id', $item->district_id)->where('language_id', '1')->first();
+                $item->district_title = $pos_district_slug->title;
+                // $item->images = $item->getMedia('logo', true);
+            }
+            
+            // if(isset($location_type)){
+            //     foreach($data['retail_shop'] as $item=>$location_id){
+            //         if($location_id != $location_type){
+            //             unset($data['retail_shop'][$item]);
+            //         }
+            //     }
+            // }
             foreach($data['retail_shop'] as $item){
                 $item->images = $item->getMedia('logo', true);
             }
+            $location_id_ar = [];
+            if($region_type != 'all' && $region_type != '' && !is_null($region_type)){
+                $region = \App\PosLocationCategory::findOrFail($region_type);
+                $data['locations'] = $region->child_cats()->withDescription()->with(['childs' => function($query){
+                    $query->withDescription()->online()->arrange()->whereHas('retail_shops', function($query){
+                        $query->online();
+                    });
+                }])->whereHas('childs.retail_shops', function($query){
+                    $query->online();
+                })->online()->arrange()->get();
+                for($i=0;$i<sizeof($data['locations']);$i++){
+                    array_push($location_id_ar,$data['locations'][$i]['id']);
+                }
+            }
+            // var_dump("Type: ".$district_type);
+            // for($i=0;$i<sizeof($data['retail_shop']);$i++){
+            //     if($data['retail_shop'][$i]['district_id'] != intval($district_type)){
+            //         var_dump($data['retail_shop'][$i]['district_id']);
+            //         unset($data['retail_shop'][$i]);
+            //     }
+            //     else{
+            //         var_dump("Not: ".$data['retail_shop'][$i]['district_id']);
+            //     }
+            // }
+            // $data['retail_shop'] = array_values($data['retail_shop']);
+            // print_r($data['locations'][0]['title']);
+            // dd($data['locations']);
+            // $data['all_location'] = \App\PosLocationCategory::withDescription()->online()->arrange();
+            // if($region_type != 'all'){
+            //     $data['all_location']->where('id',$region_type);
+            // }
+            // $data['all_location']->get();
+            // if($location_category->has_child_category == 1){
+            //     $location_category_data = \App\PosLocationCategory::findOrFail($region_type);
+            //     $data['location_categories'] = $location_category_data->child_cats()->withDescription()->with(['childs' => function($query){
+            //         $query->withDescription()->online()->arrange()->with(['retail_shops' => function($query){
+            //             $query->withDescription()->online()->arrange();
+            //         }])->whereHas('retail_shops', function($query){
+            //             $query->online();
+            //         });
+            //     }])->whereHas('childs.retail_shops', function($query){
+            //         $query->online();
+            //     })->online()->arrange()->get();
+            // }
+            // else{
+            //     // var_dump("4");
+            // }
+            // echo "<pre>";
+            // dd($data['location_categories']);
+            
             $shop = $data;
+            // echo "</pre>";
         }
         else{
             $online_shop = \App\OnlineShop::withDescription()->online()->firstOrFail();
