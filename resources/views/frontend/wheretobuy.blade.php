@@ -212,7 +212,7 @@
               </div>
               <div class="where-to-buy-retails-row">
                 <!-- For Each-->
-                <div class="where-to-buy-title" style="font-size:35px;padding-bottom:20px">Hong Kong</div>
+                {{-- <div class="where-to-buy-title" style="font-size:35px;padding-bottom:20px">Hong Kong</div> --}}
                 @foreach($location_categories as $location_category)
                 <div class="where-to-buy-retails-b">
                   <div class="sub-heading-b">

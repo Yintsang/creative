@@ -40,6 +40,7 @@ class WhereToBuyController extends BaseFrontendController
             }])->whereHas('childs.retail_shops', function($query){
                 $query->online();
             })->online()->arrange()->get();
+            // dd($data['location_categories']);
             // $data['retail_shop'] = \App\RetailShop::withDescription()->online()->arrange()->get();
             // $data['seo'] = $this->getSeo($data['wheretobuy']);
             // dd($data['about_us_history']->content);
@@ -97,7 +98,7 @@ class WhereToBuyController extends BaseFrontendController
             //     $query->online();
             // })->online()->arrange()->get();
 
-            $retail_shop = \App\RetailShop::withDescription()->online()->firstOrFail();
+            $retail_shop = \App\RetailShop::withDescription()->online()->firstOrFail()->orderBy('district_id', 'DESC');
             $data['retail_shop'] = $retail_shop->with(['supplier' => function($query){
                 $query->withDescription()->online()->arrange();
             }])->where(function($query){
@@ -160,6 +161,8 @@ class WhereToBuyController extends BaseFrontendController
                     array_push($location_id_ar,$data['locations'][$i]['id']);
                 }
             }
+            $data['all_location'] = \App\PosLocation::withDescription()->online()->arrange()->get();
+            $data['all_location_categorys'] = \App\PosLocationCategory::withDescription()->online()->arrange()->get();
             // var_dump("Type: ".$district_type);
             // for($i=0;$i<sizeof($data['retail_shop']);$i++){
             //     if($data['retail_shop'][$i]['district_id'] != intval($district_type)){
@@ -215,7 +218,23 @@ class WhereToBuyController extends BaseFrontendController
             foreach($data['online_shop'] as $item){
                 $item->images = $item->getMedia('logo', true);
             }
-            $retail_shop = \App\RetailShop::withDescription()->online()->firstOrFail();
+            // $retail_shop = \App\RetailShop::withDescription()->online()->firstOrFail();
+            // $data['retail_shop'] = $retail_shop->with(['supplier' => function($query){
+            //     $query->withDescription()->online()->arrange();
+            // }])->where(function($query){
+            //     if(request('brand_type') != 'all'){
+            //         if($supplier_id = request('brand_type')){
+            //             $query->whereHas('supplier', function($query) use($supplier_id){
+            //                 $query->whereId($supplier_id)->online();
+            //             });
+            //         }
+            //     }
+            // })->withDescription()->online()->arrange()->get();
+            // foreach($data['retail_shop'] as $item){
+            //     $item->images = $item->getMedia('logo', true);
+            // }
+            // $shop = $data;
+            $retail_shop = \App\RetailShop::withDescription()->online()->firstOrFail()->orderBy('district_id', 'DESC');
             $data['retail_shop'] = $retail_shop->with(['supplier' => function($query){
                 $query->withDescription()->online()->arrange();
             }])->where(function($query){
@@ -226,10 +245,60 @@ class WhereToBuyController extends BaseFrontendController
                         });
                     }
                 }
-            })->withDescription()->online()->arrange()->get();
+            });
+            if(isset($district_type)){
+                if($district_type != 'all'){
+                    $data['retail_shop']->where(function($query){
+                        if($district_id = request('district_type')){
+                            $query->whereHas('district', function($query) use($district_id){
+                                $query->whereId($district_id)->online();
+                            });
+                        }
+                    });
+                }
+            }
+            $data['retail_shop'] = $data['retail_shop']->withDescription()->online()->arrange()->get();
+            foreach($data['retail_shop'] as $item){
+                $pos_location_id = DB::table('pos_location')->where('id', $item->district_id)->first();
+                if($pos_location_id->parent_id == 9 ){ //Hard Code for Macau
+                    $item->location_id = $pos_location_id->id;
+                }
+                else{
+                    $item->location_id = $pos_location_id->parent_id;
+                }
+                // $pos_location_slug = DB::table('pos_location_description')->where('description_id', $pos_location_id->id)->where('language_id', '1')->first();
+                // $item->location_title = $pos_location_slug->title;
+                $pos_district_slug = DB::table('pos_location_description')->where('description_id', $item->district_id)->where('language_id', '1')->first();
+                $item->district_title = $pos_district_slug->title;
+                // $item->images = $item->getMedia('logo', true);
+            }
+            
+            // if(isset($location_type)){
+            //     foreach($data['retail_shop'] as $item=>$location_id){
+            //         if($location_id != $location_type){
+            //             unset($data['retail_shop'][$item]);
+            //         }
+            //     }
+            // }
             foreach($data['retail_shop'] as $item){
                 $item->images = $item->getMedia('logo', true);
             }
+            $location_id_ar = [];
+            if($region_type != 'all' && $region_type != '' && !is_null($region_type)){
+                $region = \App\PosLocationCategory::findOrFail($region_type);
+                $data['locations'] = $region->child_cats()->withDescription()->with(['childs' => function($query){
+                    $query->withDescription()->online()->arrange()->whereHas('retail_shops', function($query){
+                        $query->online();
+                    });
+                }])->whereHas('childs.retail_shops', function($query){
+                    $query->online();
+                })->online()->arrange()->get();
+                for($i=0;$i<sizeof($data['locations']);$i++){
+                    array_push($location_id_ar,$data['locations'][$i]['id']);
+                }
+            }
+            $data['all_location'] = \App\PosLocation::withDescription()->online()->arrange()->get();
+            $data['all_location_categorys'] = \App\PosLocationCategory::withDescription()->online()->arrange()->get();
             $shop = $data;
         }
         // $slug = request()->all()['business'];
